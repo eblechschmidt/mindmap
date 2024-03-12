@@ -1,0 +1,10 @@
+Mindmap:
+  - Server:
+      - Auto Refresh
+      - Animate generation
+  - Export:
+      - To file
+      - Formats:
+          - SVG
+          - PNG
+          - PDF

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/eblechschmidt/mindmap/internal/app"
 	e "github.com/eblechschmidt/mindmap/internal/error"
 	"github.com/urfave/cli/v2"
 )
@@ -25,6 +26,7 @@ func runServe(ctx *cli.Context) error {
 	if err := fileExists(fname); err != nil {
 		return userErr(err)
 	}
+	app.Serve(fname)
 	return nil
 }
 
