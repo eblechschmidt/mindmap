@@ -17,6 +17,7 @@ type Server struct {
 	http *http.Server
 }
 
+// New creates a new server
 func New(url string) (*Server, error) {
 	s := &Server{http: &http.Server{Addr: url}}
 
@@ -27,6 +28,8 @@ func New(url string) (*Server, error) {
 
 	return s, nil
 }
+
+// Run starts the server
 func (s *Server) Run() error {
 	go func() {
 		if err := s.http.ListenAndServe(); !errors.Is(err, http.ErrServerClosed) {
@@ -37,12 +40,13 @@ func (s *Server) Run() error {
 	return nil
 }
 
+// Stop gracefully shuts the server down
 func (s *Server) Stop() error {
 	ctx, release := context.WithTimeout(context.Background(), 10*time.Second)
 	defer release()
 
 	if err := s.http.Shutdown(ctx); err != nil {
-		return fmt.Errorf("error during server shutdown: %w")
+		return fmt.Errorf("error during server shutdown: %w", err)
 	}
 	return nil
 }
