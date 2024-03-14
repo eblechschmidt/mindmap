@@ -17,8 +17,8 @@ type Server struct {
 	http *http.Server
 }
 
-func New() (*Server, error) {
-	s := &Server{http: &http.Server{Addr: "127.0.0.1:1337"}}
+func New(url string) (*Server, error) {
+	s := &Server{http: &http.Server{Addr: url}}
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /", s.home)
@@ -27,13 +27,14 @@ func New() (*Server, error) {
 
 	return s, nil
 }
-func (s *Server) Run() {
+func (s *Server) Run() error {
 	go func() {
 		if err := s.http.ListenAndServe(); !errors.Is(err, http.ErrServerClosed) {
 			log.Fatalf("HTTP server error: %v", err)
 		}
 	}()
-	log.Printf("Server listening at %s", s.http.Addr)
+	log.Printf("Mindmap served at http://%s", s.http.Addr)
+	return nil
 }
 
 func (s *Server) Stop() error {
